@@ -1,0 +1,8 @@
+/bin
+/obj
+/Properties
+/wwwroot
+/ClientApp
+appsettings.Development.json
+appsettings.json
+SheduleShifts.WEB.csproj
