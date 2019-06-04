@@ -65,13 +65,13 @@ namespace SheduleShiftsAPI.Repositories
             }
         }
 
-        public object Login(string idNumber, string password)
+        public async Task<object> Login(string idNumber, string password)
         {
             ObjectResponse response;
             try
             {
-                    AreaManager areaManager = Context.AreaManagers.Where(
-                        m => m.IdNumber == idNumber).ToList().LastOrDefault();
+                    AreaManager areaManager = (await Context.AreaManagers.Where(
+                        m => m.IdNumber == idNumber).ToListAsync()).LastOrDefault();
                     if (areaManager == null)
                     {
                         response = new ObjectResponse
