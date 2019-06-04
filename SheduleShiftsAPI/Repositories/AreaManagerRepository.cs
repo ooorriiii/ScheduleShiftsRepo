@@ -196,12 +196,12 @@ namespace SheduleShiftsAPI.Repositories
             }
         }
 
-        public object GetAllManagers()
+        public async Task<object> GetAllManagers()
         {
             ObjectResponse response;
             try
             {
-                List<AreaManager> areaManagers = Context.AreaManagers.ToList();
+                List<AreaManager> areaManagers = await Context.AreaManagers.ToListAsync();
                 if(areaManagers.Count < 1 || areaManagers == null)
                 {
                     response = new ObjectResponse
