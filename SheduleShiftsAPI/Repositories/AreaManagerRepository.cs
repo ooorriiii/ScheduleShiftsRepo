@@ -1,4 +1,5 @@
 ﻿using Common;
+using Microsoft.EntityFrameworkCore;
 using SheduleShiftsAPI.Models;
 using SheduleShiftsAPI.Models.Employee;
 using System;
@@ -143,6 +144,46 @@ namespace SheduleShiftsAPI.Repositories
                 return response;
             }
             catch (Exception)
+            {
+                response = new ObjectResponse
+                {
+                    IsPassed = false,
+                    IsException = true,
+                    Value = "Somthing rong with the database please try again"
+                };
+
+                return response;
+            }
+        }
+
+        public async Task<object> GetByAreaId(int areaId)
+        {
+            ObjectResponse response;
+            try
+            {
+                AreaManager areaManager = (await Context.AreaManagers.Where(
+                    am => am.AreaId == areaId).ToListAsync()).LastOrDefault();
+                if(areaManager == null || areaManager == default)
+                {
+                    response = new ObjectResponse
+                    {
+                        IsPassed = false,
+                        IsException = false,
+                        Value = "Please defind the manager off this area"
+                    };
+
+                    return response;
+                }
+
+                response = new ObjectResponse
+                {
+                    IsPassed = true,
+                    Value = areaManager
+                };
+
+                return response;
+            }
+            catch
             {
                 response = new ObjectResponse
                 {
