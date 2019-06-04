@@ -1,4 +1,5 @@
 ﻿using Common;
+using Microsoft.EntityFrameworkCore;
 using SheduleShiftsAPI.Models;
 using SheduleShiftsAPI.Models.Employee;
 using System;
@@ -21,8 +22,8 @@ namespace SheduleShiftsAPI.Repositories
             ObjectResponse response;
             try
             {
-                Employee employee = Context.Employees.Where(
-                    e => e.IdNumber == newEmployee.IdNumber).ToList().LastOrDefault();
+                Employee employee = (await Context.Employees.Where(
+                    e => e.IdNumber == newEmployee.IdNumber).ToListAsync()).LastOrDefault();
                 if (employee == null)
                 {
                     AreaManager manager = Context.AreaManagers.Where(
@@ -64,13 +65,13 @@ namespace SheduleShiftsAPI.Repositories
             }
         }
 
-        public object Login(string idNumber, string password)
+        public async Task<object> Login(string idNumber, string password)
         {
             ObjectResponse response;
             try
             {
-                Employee employee = Context.Employees.Where(
-                    e => e.IdNumber == idNumber).ToList().LastOrDefault();
+                Employee employee = (await Context.Employees.Where(
+                    e => e.IdNumber == idNumber).ToListAsync()).LastOrDefault();
                 if (employee == null)
                 {
                     response = new ObjectResponse
