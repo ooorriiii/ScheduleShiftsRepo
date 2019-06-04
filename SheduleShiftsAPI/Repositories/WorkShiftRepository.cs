@@ -408,6 +408,38 @@ namespace SheduleShiftsAPI.Repositories
                     Value = workShift
                 };
 
+                ActivityRecord activityRecord;
+                try
+                {
+                    activityRecord = new ActivityRecord
+                    {
+                        Action = Enums.ActionType.Create,
+                        ManagerId = (await Context.AreaManagers.Where(
+                            ma => ma.AreaId == workShift.WorkDay.Position.AreaId)
+                            .ToListAsync()).LastOrDefault().Id,
+                        Time = DateTime.Now,
+                        WorkShiftId = workShift.Id
+                    };
+
+                    await Context.ActivityRecords.AddAsync(activityRecord);
+                    await Context.SaveChangesAsync();
+                }
+                catch
+                {
+                    activityRecord = new ActivityRecord
+                    {
+                        Action = Enums.ActionType.Create,
+                        ManagerId = (await Context.AreaManagers.Where(
+                            ma => ma.AreaId == workShift.WorkDay.Position.AreaId)
+                            .ToListAsync()).LastOrDefault().Id,
+                        Time = DateTime.Now,
+                        WorkShiftId = workShift.Id
+                    };
+
+                    await Context.ActivityRecords.AddAsync(activityRecord);
+                    await Context.SaveChangesAsync();
+                }
+
                 return response;
             }
             catch
@@ -423,7 +455,7 @@ namespace SheduleShiftsAPI.Repositories
             }
         }
 
-        public async Task<object> Update(WorkShift workShift)
+        public async Task<object> Edit(WorkShift workShift)
         {
             ObjectResponse response;
             try
@@ -455,6 +487,38 @@ namespace SheduleShiftsAPI.Repositories
                     Value = workShiftToUpdate
                 };
 
+                ActivityRecord activityRecord;
+                try
+                {
+                    activityRecord = new ActivityRecord
+                    {
+                        Action = Enums.ActionType.Edit,
+                        ManagerId = (await Context.AreaManagers.Where(
+                            am => am.AreaId == workShift.WorkDay.Position.AreaId)
+                            .ToListAsync()).LastOrDefault().Id,
+                        Time = DateTime.Now,
+                        WorkShiftId = workShift.Id
+                    };
+
+                    await Context.ActivityRecords.AddAsync(activityRecord);
+                    await Context.SaveChangesAsync();
+                }
+                catch
+                {
+                    activityRecord = new ActivityRecord
+                    {
+                        Action = Enums.ActionType.Edit,
+                        ManagerId = (await Context.AreaManagers.Where(
+                            am => am.AreaId == workShift.WorkDay.Position.AreaId)
+                            .ToListAsync()).LastOrDefault().Id,
+                        Time = DateTime.Now,
+                        WorkShiftId = workShift.Id
+                    };
+
+                    await Context.ActivityRecords.AddAsync(activityRecord);
+                    await Context.SaveChangesAsync();
+                }
+
                 return response;
             }
             catch
@@ -469,24 +533,6 @@ namespace SheduleShiftsAPI.Repositories
                 return response;
             }
         }
-
-        public async Task<object> RequestChangeShiftTime(int employeeId, 
-            int workShiftId,
-            DateTime startShift,
-            DateTime endShift)
-        {
-            ObjectResponse response;
-            try
-            {
-
-            }
-            catch
-            {
-
-                throw;
-            }
-        }
-
         public async Task<object> DeleteById(int workShiftId)
         {
             ObjectResponse response;
@@ -529,5 +575,23 @@ namespace SheduleShiftsAPI.Repositories
                 return response;
             }
         }
+
+        public async Task<object> RequestChangeShiftTime(int employeeId, 
+            int workShiftId,
+            DateTime startShift,
+            DateTime endShift)
+        {
+            ObjectResponse response;
+            try
+            {
+
+            }
+            catch
+            {
+
+                throw;
+            }
+        }
+
     }
 }
